@@ -1,0 +1,170 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <lightning-layout horizontal-align="center" class="slds-box slds-theme_default">
+    <lightning-layout-item padding="around-small" size="4">
+      <div class="slds-form-element">
+        <label class="slds-form-element__label" for="combobox-id-3" id="combobox-label-id-32">
+          <b>Recent Record Search</b>
+        </label>
+        <div class="slds-form-element__control">
+          <div class="slds-combobox_container">
+            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+              <template lwc:if={isRecordSelected}>
+                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right" role="none">
+                  <span class="slds-icon_container slds-icon-standard-account slds-combobox__input-entity-icon"
+                    title="Account">
+                    <lightning-icon icon-name="standard:sobject_collection" size="x-small"></lightning-icon>
+                    <span class="slds-assistive-text">Account</span>
+                  </span>
+                  <div role="combobox" tabindex="0"
+                    class="slds-input_faux slds-combobox__input slds-combobox__input-value"
+                    aria-labelledby="combobox-label-id-131 combobox-id-18-selected-value"
+                    id="combobox-id-18-selected-value" aria-controls="listbox-id-18" aria-expanded="false"
+                    aria-haspopup="listbox">
+                    <span class="slds-truncate" id="combobox-value-id-94">{selectedRecord.selectedName}</span>
+                  </div>
+                  <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                    title="Remove selected option">
+                    <lightning-icon icon-name="utility:close" size="x-small"
+                      onclick={removeSelectedValue}></lightning-icon>
+                    <span class="slds-assistive-text">Remove selected option</span>
+                  </button>
+                </div>
+              </template>
+              <template lwc:else>
+                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                  <input type="text" class="slds-input slds-combobox__input slds-has-focus" id="combobox-id-3"
+                    aria-activedescendant="option1" aria-autocomplete="list" aria-controls="listbox-id-3"
+                    aria-expanded="true" aria-haspopup="listbox" role="combobox" placeholder="Object Name"
+                    onkeyup={changeHandler} />
+                </div>
+              </template>
+              <template lwc:if={displayOptions}>
+                <div id="listbox-id-3" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                  role="listbox" tabindex="0" aria-busy="false">
+                  <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                    <template for:each={objectData.data} for:item="objectname">
+                      <li key={objectname.Id} role="presentation" class="slds-listbox__item"
+                        data-item={objectname.DeveloperName} onclick={clickHandler}>
+                        <div aria-selected="true"
+                          class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta slds-has-focus"
+                          role="option" tabindex="0">
+                          <span class="slds-media__figure slds-listbox__option-icon">
+                            <lightning-icon icon-name="standard:sobject_collection" size="x-small"></lightning-icon>
+                          </span>
+                          <span class="slds-media__body">
+                            <span
+                              class="slds-listbox__option-text slds-listbox__option-text_entity">{objectname.DeveloperName}</span>
+                          </span>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </lightning-layout-item>
+
+    <lightning-layout-item padding="around-small" size="4">
+
+      <lightning-input type="number" name="input8" label="Required number of Records" max="199"
+        message-when-range-overflow="Maximum Value allowed is 199" onchange={inputChangeHandler}></lightning-input>
+
+    </lightning-layout-item>
+
+    <lightning-layout-item padding="around-small" size="4">
+    </br>
+      <button class="slds-button slds-button_success" disabled={disableButton} onclick={fetchRecords}>Submit</button>
+    </lightning-layout-item>
+  </lightning-layout>
+
+  <!--Show Error Message if Error Comes-->
+  <template lwc:if={displayError}>
+    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+      <span class="slds-assistive-text">error</span>
+      <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small"
+        title="Description of icon when needed">
+        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+          <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+        </svg>
+      </span>
+      <h2>Something Went Wrong!
+      </h2>
+      <div class="slds-notify__close">
+        <button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" title="Close">
+          <svg class="slds-button__icon" aria-hidden="true">
+            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+          </svg>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+      </div>
+    </div>
+  </template>
+  <!--Show Error Message if Records are not Fetched-->
+  <template lwc:if={displayWarning}>
+    <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+      <span class="slds-assistive-text">warning</span>
+      <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small"
+        title="Description of icon when needed">
+        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+          <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#warning"></use>
+        </svg>
+      </span>
+      <h2>Zero Records Fetched
+      </h2>
+      <div class="slds-notify__close">
+        <button class="slds-button slds-button_icon slds-button_icon-small" title="Close">
+          <svg class="slds-button__icon" aria-hidden="true">
+            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+          </svg>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <!--Component to show label selection window-->
+  <template lwc:if={objectLabelcmpvisible}>
+    <lightning-card>
+      <lightning-dual-listbox name="labels" label="If No parameters are selected, Default Parameters will be displayed"
+        source-label="Available" selected-label="Selected" field-level-help="Id is selected by Default"
+        options={options} onchange={labelChange}></lightning-dual-listbox>
+    </lightning-card>
+  </template>
+
+  <!-- Showing Data using Lightning-Card -->
+  <template lwc:if={showDataTable}>
+    <lightning-layout class="custom-box" multiple-rows>
+      <template for:each={apexReturnedData} for:item="item">
+        <lightning-layout-item key={item} class="slds-p-around_x-small">
+          <lightning-card lwc:if={item.hadEditAccess} style=" --sds-c-card-color-background: #82f5ce">
+            <div class="slds-scrollable" style="height:5rem;width:20rem" tabindex="0">
+              <div class="slds-p-left_x-small">
+                <template for:each={item.Record} for:item="iterator">
+                  <b key={iterator}>{iterator.label}:</b>
+                  <p key={iterator}> {iterator.value}</p>
+                </template>
+                <lightning-button variant="success" label="Record Button" title="Open Record to Edit"
+                  onclick={recordButtonClick} data-item={item.Id} class="slds-m-left_x-small"></lightning-button>
+              </div>
+            </div>
+          </lightning-card>
+          <lightning-card lwc:else style=" --sds-c-card-color-background: #f08080">
+            <div class="slds-scrollable" style="height:5rem;width:20rem" tabindex="0">
+              <div class="slds-p-left_x-small">
+                <template for:each={item.Record} for:item="iterator">
+                  <b key={iterator}>{iterator.label}:</b>
+                  <p key={iterator}> {iterator.value}</p>
+                </template>
+              </div>
+            </div>
+          </lightning-card>
+        </lightning-layout-item>
+      </template>
+    </lightning-layout>
+  </template>
+
+</template>
