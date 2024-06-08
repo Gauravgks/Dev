@@ -10,4 +10,22 @@ public with sharing class AccountTriggerHandler {
          }
      }
 
+
+     public static void CreateChildAccount(Map<Id,Account> accMap){
+        List<Account> finalList = new List<Account>();
+
+       List<Account> accList = [SELECT Id, Name, Type,ParentId FROM Account WHERE Id IN :accMap.keySet() ];
+        for(Account acc : accList){
+            if(acc.Type == 'Prospect'){
+                Account account = new Account();
+                account.ParentId = acc.Id;
+                account.Name = 'Account Created through Trigger';
+                finalList.add(account);
+            }
+        }
+        if(finalList.size() != 0){
+            INSERT finalList;
+        }
+     }
+
 }
