@@ -16,7 +16,7 @@ export default class LifeCycleHookChild extends LightningElement {
         console.log('Inside Child Rendered Callback')
     }
     handleInputFocus1(event) {
-        //this.valueFromJSChild = event.target.value;
+        this.valueFromJSChild = event.target.value;
 
         this.dispatchEvent(
             new CustomEvent("senddatatoparent", {
