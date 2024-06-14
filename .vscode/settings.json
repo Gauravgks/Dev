@@ -7,14 +7,22 @@
   "salesforcedx-vscode-core.show-cli-success-msg": false,
   "cSpell.words": [
     "acclist",
+    "Apexreturned",
+    "Apiname",
     "cacheable",
+    "Labelcmpvisible",
+    "Lable",
+    "listbox",
     "NOPMD",
+    "objectname",
     "picklist",
     "querylocator",
     "recordid",
+    "slds",
     "sobj",
     "sobject",
     "SOQL",
+    "spliting",
     "valuefrom"
   ]
 }

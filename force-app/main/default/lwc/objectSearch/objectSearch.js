@@ -212,7 +212,7 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
       return valueLabelData;
     }
 
-    //! Calling Apex method to return all records from the selected Obj
+    //? Calling Apex method to return all records from the selected Obj
     sendRecordDetails({
       objectName: this.selectedRecord.selectedName,
       size: this.displaySize,
