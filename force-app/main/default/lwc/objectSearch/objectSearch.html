@@ -76,7 +76,7 @@
     </lightning-layout-item>
 
     <lightning-layout-item padding="around-small" size="4">
-    </br>
+      </br>
       <button class="slds-button slds-button_success" disabled={disableButton} onclick={fetchRecords}>Submit</button>
     </lightning-layout-item>
   </lightning-layout>
@@ -135,8 +135,10 @@
     </lightning-card>
   </template>
 
+
+
   <!-- Showing Data using Lightning-Card -->
-  <template lwc:if={showDataTable}>
+  <!-- <template lwc:if={showDataTable}>
     <lightning-layout class="custom-box" multiple-rows>
       <template for:each={apexReturnedData} for:item="item">
         <lightning-layout-item key={item} class="slds-p-around_x-small">
@@ -165,6 +167,14 @@
         </lightning-layout-item>
       </template>
     </lightning-layout>
+  </template> -->
+
+  <template lwc:if={showDataTable}>
+    <div style="height: 300px;">
+      <lightning-datatable data={data} columns={columns} key-field="Id" onrowselection={getSelectedID}>
+      </lightning-datatable>
+    </div>
   </template>
+
 
 </template>

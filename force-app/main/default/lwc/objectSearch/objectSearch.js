@@ -1,5 +1,5 @@
 /* eslint-disable @lwc/lwc/no-async-operation */
-import { LightningElement, wire, api } from "lwc";
+import { LightningElement, wire, api, track } from "lwc";
 import userId from "@salesforce/user/Id";
 import searchRecords from "@salesforce/apex/customLookupController.searchRecords";
 import sendRecordDetails from "@salesforce/apex/customLookupController.sendRecordDetails";
@@ -8,7 +8,9 @@ import { NavigationMixin } from "lightning/navigation";
 import { refreshApex } from '@salesforce/apex'
 
 const Delay = 300;
+
 export default class ObjectSearch extends NavigationMixin(LightningElement) {
+
   objectName;
   searchValue;
   displaySize = "";
@@ -38,6 +40,14 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
   displayError = false;
   displayWarning = false;
   showHelpMessage = false;
+
+  // Datatable Variables
+  // data= [{Id:'003J4000001e6AkIAI',
+  //   IsDeleted: 'false'}, {Id:'003J4000001e6AkIAI',
+  //   IsDeleted: 'false'}]
+  data = []
+  @track columns;
+
 
   @wire(searchRecords, { searchKey: "$searchValue" }) objectData;
 
@@ -91,12 +101,6 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
     })
       .then((result) => {
         console.log("Log Value ~ ObjectSearch ~ .then ~ ApexreturnedLable:", result)
-
-        // Parsing the returned obj fields and spliting it to get the FieldApiname
-        // const labels = [];
-        // result.forEach((obj) => {
-        //   labels.push(obj.Field.split(".")[1]);
-        // });
 
         //* lightning-dual-listbox requires data in value : label format. Converting the Apex labels returned list to js obj
         let convertedData = [];
@@ -184,35 +188,45 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
     }
 
 
-    //* Converting the Apex returned list to js obj
+    //* Converting the Apex returned list to js obj and adding '' for empty fields
     // Iterate through the field names array
-    function createCopy(data) {
-      const idList = [];
+    function prepareData(data, queryLabels) {
+      const modifiedData = [];
       data.forEach((item) => {
-        let json = {};
-        const obj = { ...item.obj };
+        let obj = { ...item.obj };
+
         if ("hadEditAccess" in item && "Id" in obj) {
-          const idValue = obj.Id;
-          json.hadEditAccess = item.hadEditAccess;
-          json.Id = idValue;
-          json.Record = convertToValueLabel(item.obj)
-          idList.push(json);
+          obj.hadEditAccess = item.hadEditAccess;
+          queryLabels.forEach((items) => {
+            if (!(items in obj)) {
+              obj[items] = ''
+            }
+          })
+          modifiedData.push(convertToValueLabel(obj));
         }
       });
-      return idList;
+
+      return modifiedData;
     }
+
 
     function convertToValueLabel(jsonData) {
       const valueLabelData = [];
       for (let key in jsonData) {
         if (Object.prototype.hasOwnProperty.call(jsonData, key)) {
-          valueLabelData.push({ value: jsonData[key], label: key });
+          valueLabelData.push({ label: key, value: jsonData[key] });
         }
       }
       return valueLabelData;
     }
 
-    //? Calling Apex method to return all records from the selected Obj
+    // Creating Data for Column of DataTable
+    this.columns = this.queryLabels.map((label, index) => ({
+      label: label,
+      fieldName: label
+    }));
+
+
     sendRecordDetails({
       objectName: this.selectedRecord.selectedName,
       size: this.displaySize,
@@ -223,7 +237,19 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
         this.resultValue = result.length;
 
         let value = result;
-        this.apexReturnedData = createCopy(value);
+        this.apexReturnedData = prepareData(value, this.queryLabels);
+
+        this.data = fetchData(this.apexReturnedData)
+        function fetchData(datas) {
+          return datas.map(itemArray => {
+            const result = {};
+            itemArray.forEach(item => {
+              result[item.label] = item.value.toString();
+            });
+            return result;
+          });
+        }
+  
 
         this.showDataTable = true;
         this.objectLabelcmpvisible = false;
@@ -250,21 +276,26 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
     this.allLabel = [];
   }
 
-  recordButtonClick(event) {
-    let selectedId = event.currentTarget.dataset.item;
-    console.log(
-      "Log Value ~ ObjectSearch ~ recordButtonClick ~ selectedId:",
-      selectedId
-    );
 
-    this[NavigationMixin.Navigate]({
-      type: "standard__recordPage",
-      attributes: {
-        recordId: selectedId,
-        objectApiName: this.selectedRecord.selectedName,
-        actionName: "edit"
+  getSelectedID(event) {
+    
+    const selectedRows = event.detail.selectedRows;
+    console.log("Log Value ~ ObjectSearch ~ getSelectedID ~ selectedRows:", selectedRows)
+    // Display that fieldName of the selected rows
+    for (let i = 0; i < selectedRows.length; i++) {
+      if (selectedRows[i].hadEditAccess == "true") {
+        this[NavigationMixin.Navigate]({
+          type: "standard__recordPage",
+          attributes: {
+            recordId: selectedRows[i].Id,
+            objectApiName: this.selectedRecord.selectedName,
+            actionName: "edit"
+          }
+        });
       }
-    });
-    refreshApex(this.sendRecordDetails)
+      else{
+        alert("You Don't have Edit Access of the Record")
+      }
+    }
   }
 }
