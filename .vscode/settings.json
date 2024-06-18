@@ -9,7 +9,9 @@
     "acclist",
     "Apexreturned",
     "Apiname",
+    "Batchable",
     "cacheable",
+    "Callouts",
     "datas",
     "Datatable",
     "Labelcmpvisible",
@@ -18,13 +20,16 @@
     "NOPMD",
     "objectname",
     "picklist",
+    "Practise",
     "querylocator",
     "recordid",
+    "Schedulable",
     "slds",
     "sobj",
     "sobject",
     "SOQL",
     "spliting",
+    "Statefull",
     "valuefrom"
   ]
 }
