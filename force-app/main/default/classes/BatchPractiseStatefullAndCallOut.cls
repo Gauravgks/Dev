@@ -9,7 +9,7 @@ public class BatchPractiseStatefullAndCallOut implements Database.Batchable<sobj
 
     public void Execute(Database.BatchableContext BC,List<Account> accList){//NOPMD
         
-        // call to ApexResource class defined in the same Org
+        // call to ApexRestResource class defined in the same Org
         for(Account acc: accList){
             Http h = new Http();
 

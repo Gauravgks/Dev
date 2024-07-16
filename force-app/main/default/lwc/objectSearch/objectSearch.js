@@ -42,9 +42,6 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
   showHelpMessage = false;
 
   // Datatable Variables
-  // data= [{Id:'003J4000001e6AkIAI',
-  //   IsDeleted: 'false'}, {Id:'003J4000001e6AkIAI',
-  //   IsDeleted: 'false'}]
   data = []
   @track columns;
 
@@ -199,7 +196,7 @@ export default class ObjectSearch extends NavigationMixin(LightningElement) {
           obj.hadEditAccess = item.hadEditAccess;
           queryLabels.forEach((items) => {
             if (!(items in obj)) {
-              obj[items] = ''
+              obj[items] = '-'
             }
           })
           modifiedData.push(convertToValueLabel(obj));

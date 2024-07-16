@@ -5,6 +5,13 @@
 // You can also execute the entire file by running the command:
 //     SFDX: Execute Anonymous Apex with Editor Contents
 
-string tempvar = 'Enter_your_name_here';
-System.debug('Hello World!');
-System.debug('My name is ' + tempvar);
+List<Account> acc = new List<Account>();
+
+for(Integer i =0; i<=5000; i++){
+    Account a = new Account();
+    a.Name = 'Created for Recursion Testing' + i;
+    a.Type = 'Prospect';
+    acc.add(a);
+}
+
+insert acc;
