@@ -1,8 +1,3 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement } from 'lwc';
 
-export default class NestedRecord extends LightningElement {
-    @api recordId;
-    @api objectApiName;
-
-    items = []
-} 
+export default class NestedRecord extends LightningElement {}

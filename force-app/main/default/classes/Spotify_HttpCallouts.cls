@@ -3,10 +3,11 @@ public class Spotify_HttpCallouts {
   public static String getUserDetail() {
     Http http = new Http();
     HttpRequest req = new HttpRequest();
-    req.setEndpoint('callout:Spotify/v1/me');
+    req.setEndpoint('callout:SpotifyNew/v1/me');
     req.setMethod('GET');
     HttpResponse res = http.send(req);
 
+    System.debug(res);
     if (res.getStatusCode() == 200) {
       return res.getBody();
     } else {

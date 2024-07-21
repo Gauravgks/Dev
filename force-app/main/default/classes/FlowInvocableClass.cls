@@ -5,7 +5,7 @@ public with sharing class FlowInvocableClass {
         List<Id> accountIds = new List<Id>();
         String name = value[0].name;
         String value2 = value.get(0).value2;
-        List<Account> accounts = [SELECT Id FROM Account WHERE Name = : name];//NOPMD
+        List<Account> accounts = [SELECT Id FROM Account WHERE Name = : name];
         for (Account account : accounts) {
             accountIds.add(account.Id);
         }

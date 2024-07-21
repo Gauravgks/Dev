@@ -8,5 +8,4 @@ public without sharing class updateRecordWithoutSharingAccount {
     }
     insert accValue1;
   }
-  updateRecordWithoutSharing class1 = new updateRecordWithoutSharing();
 }
