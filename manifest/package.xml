@@ -32,5 +32,14 @@
         <members>*</members>
         <name>StaticResource</name>
     </types>
+	<types>
+		<members>HelloSlackApp</members>
+		<name>SlackApp</name>
+	</types>
+	<types>
+		<members>bye</members>
+		<members>hello</members>
+		<name>ViewDefinition</name>
+	</types>
     <version>59.0</version>
 </Package>
