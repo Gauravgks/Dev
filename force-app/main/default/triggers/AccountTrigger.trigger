@@ -5,5 +5,7 @@ trigger AccountTrigger on Account (before insert, after insert) {
 
     if(Trigger.isAfter && Trigger.isInsert){
         AccountTriggerHandler.CreateChildAccount(Trigger.newMap);
+        AccountTriggerHandler.createUser(Trigger.newMap);
     }
-}
+
+} 
