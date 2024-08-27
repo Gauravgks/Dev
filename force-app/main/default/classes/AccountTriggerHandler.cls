@@ -1,3 +1,4 @@
+// TODO: Trigger pending
 public with sharing class AccountTriggerHandler {
   public static void createAccounts(List<Account> accList) {
     for (Account acc : accList) {
@@ -58,8 +59,6 @@ public with sharing class AccountTriggerHandler {
         u.EmailEncodingKey = 'UTF-8';
 
         userList.add(u);
-      } else {
-        acc.addError('Check for Unique Fields to Create a User');
       }
     }
 
@@ -70,4 +69,6 @@ public with sharing class AccountTriggerHandler {
       insert as user userList;
     }
   }
+
+  
 }
