@@ -8,4 +8,4 @@ trigger AccountTrigger on Account (before insert, after insert) {
         AccountTriggerHandler.createUser(Trigger.newMap);
     }
 
-} 
+}

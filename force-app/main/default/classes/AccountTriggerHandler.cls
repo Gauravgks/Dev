@@ -59,7 +59,7 @@ public with sharing class AccountTriggerHandler {
         u.EmailEncodingKey = 'UTF-8';
 
         userList.add(u);
-      }
+      } 
     }
 
     if (userList.size() != 0) {
@@ -69,6 +69,4 @@ public with sharing class AccountTriggerHandler {
       insert as user userList;
     }
   }
-
-  
 }

@@ -4,7 +4,7 @@ export default class FetchRecordId extends LightningElement {
   @api recordId;
 
   get acceptedFormats() {
-    return [".pdf", ".png"];
+    return [".pdf", ".png", "txt"];
   }
 
   handleUploadFinished(event) {
