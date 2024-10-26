@@ -5,22 +5,10 @@ export default class Passwordcheck extends LightningElement {
   min = 3;
   max = 10;
 
-  changeHandler(event) {
-    this.taskname = event.target.value;
-
-    if (this.taskname <= this.min) {
-      //change color to red
-      this.template.querySelector(".nameinput").classList.add("redColor");
-    } else if (this.taskname > this.max) {
-      //change color to green
-      this.template.querySelector(".nameinput").classList.remove("redColor");
-      this.template.querySelector(".nameinput").classList.add("greenBorder");
-    }
-  }
-
   dataCheck(event) {
+    // Getting Char length
     this.value = event.target.value;
-
+    // Check for length check for min/max value
     if (this.value.length <= this.min || this.value.length > this.max) {
       //change color to red
       this.template.querySelector(".PasswordField").classList.add("redColor");
