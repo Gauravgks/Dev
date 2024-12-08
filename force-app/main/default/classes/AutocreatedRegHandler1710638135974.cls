@@ -38,6 +38,6 @@ global class AutocreatedRegHandler1710638135974 implements Auth.RegistrationHand
   }
 
   global void updateUser(Id userId, Id portalId, Auth.UserData data) {
-    
-}
+    system.debug('User Data' + data);
+  }
 }

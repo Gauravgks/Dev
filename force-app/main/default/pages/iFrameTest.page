@@ -1,0 +1,16 @@
+<apex:page controller="AccountController" id="accountPage">
+  <apex:form>
+    <apex:outputPanel id="accountDetails">
+      <apex:outputText value="Account Name: {!account.Name}" /><br />
+      <apex:outputText value="Account Industry: {!account.Industry}" /><br />
+      <apex:outputText value="Account Type: {!account.Type}" /><br />
+    </apex:outputPanel>
+
+    <!-- Example of showing Account data inside an iframe -->
+    <iframe
+      src="https://gksdevorg-dev-ed--c.develop.vf.force.com/?accId=001J400000K7wFAIAZ"
+      width="100%"
+      height="500px"
+    ></iframe>
+  </apex:form>
+</apex:page>

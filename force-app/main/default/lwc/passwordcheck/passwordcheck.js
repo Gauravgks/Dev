@@ -4,6 +4,7 @@ export default class Passwordcheck extends LightningElement {
   @track value;
   min = 3;
   max = 10;
+  @track myVal = "it's test";
 
   dataCheck(event) {
     // Getting Char length

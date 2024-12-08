@@ -68,6 +68,7 @@ public with sharing class ChildParentUpdate {
       SELECT id, description, (SELECT id, name FROM contacts)
       FROM Account
       WHERE id IN :accIds
+      WITH User_Mode
     ]; //NOPMD
 
     for (Account acc : accValues) {

@@ -1,0 +1,9 @@
+<apex:page controller="ContactController">
+  <h2>Contact Details</h2>
+
+  <apex:form>
+    <apex:outputField value="{!contact.Name}" label="Name" /><br />
+    <apex:outputField value="{!contact.Email}" label="Email" /><br />
+    <apex:outputField value="{!contact.Phone}" label="Phone" /><br />
+  </apex:form>
+</apex:page>
